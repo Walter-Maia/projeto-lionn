@@ -1,0 +1,6 @@
+# Masters 4K do Pexels (286 MB) e log do encode — só o encode.sh vale versionar
+videos/src/*.mp4
+videos/src/encode.log
+# temporários
+*.tmp
+Thumbs.db

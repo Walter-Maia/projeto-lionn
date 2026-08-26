@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LIONN — Luxury Eyewear</title>
-<meta name="description" content="LIONN Eyewear — óculos premium de sol e de grau. Óculos de precisão desenhados para definir sua presença. See beyond ordinary.">
+<meta name="description" content="LIONN Eyewear — Óculos de sol e de grau em acetato italiano e titânio. Entrega para todo o Brasil, até 10x sem juros e 30 dias para troca. See beyond ordinary.">
 <meta property="og:title" content="LIONN — Luxury Eyewear">
-<meta property="og:description" content="Óculos de precisão desenhados para definir sua presença. See beyond ordinary.">
+<meta property="og:description" content="Óculos de sol e de grau em acetato italiano e titânio. Entrega para todo o Brasil, até 10x sem juros e 30 dias para troca. See beyond ordinary.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="LIONN EYEWEAR">
 <meta name="twitter:card" content="summary_large_image">
@@ -46,7 +46,7 @@
   --transition:300ms ease;
   --ease-lux:cubic-bezier(.25,.46,.45,.94);
   --header-h:76px;
-  --announce-h:36px;
+  --announce-h:40px;
   --radius:2px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -130,6 +130,9 @@ h1,h2,h3,h4{font-weight:600;line-height:1.08;letter-spacing:-0.015em}
 .img-frame{overflow:hidden;background:#ECEAE4;position:relative}
 .img-frame img{width:100%;height:100%;object-fit:cover;transform:scale(1.02);transition:transform 700ms var(--ease-lux),opacity 600ms ease;opacity:0}
 .img-frame img.loaded{opacity:1}
+/* foto no sheet de adição rápida (mobile) — acompanha a cor escolhida */
+.qa__media{position:relative;aspect-ratio:4/3;margin-bottom:16px;border-radius:2px;overflow:hidden}
+.qa__media .img-frame{position:absolute;inset:0}
 .img-frame:hover img{transform:scale(1.06)}
 .img-fallback{
   position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
@@ -146,10 +149,11 @@ h1,h2,h3,h4{font-weight:600;line-height:1.08;letter-spacing:-0.015em}
 .announce__track{display:flex;width:max-content;animation:marquee 42s linear infinite;height:100%;align-items:center}
 .announce:hover .announce__track{animation-play-state:paused}
 .announce__item{
-  display:inline-flex;align-items:center;gap:38px;padding-right:38px;
-  font-size:10px;font-weight:500;letter-spacing:.3em;white-space:nowrap;
+  display:inline-flex;align-items:center;gap:72px;padding-right:72px;
+  font-size:15px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#fff;white-space:nowrap;
 }
-.announce__item i{width:3px;height:3px;background:var(--gold);transform:rotate(45deg);flex:none}
+.announce__item i{width:4px;height:4px;border-radius:50%;background:#fff;opacity:.9;flex:none}
+@media(max-width:767px){.announce__item{font-size:12px;gap:40px;padding-right:40px}}
 @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* ---------- Header ---------- */
@@ -185,6 +189,10 @@ h1,h2,h3,h4{font-weight:600;line-height:1.08;letter-spacing:-0.015em}
 
 /* Transparent header on home hero */
 body.home-top .header{background:transparent;border-color:transparent;color:var(--white);backdrop-filter:none}
+/* Enquanto o header (sticky) estiver sobre o hero, sem backdrop-filter: desfocar um vídeo
+   que está sendo escalado pelo Ken Burns obriga a GPU a recalcular o blur a cada frame e
+   travava o vídeo ao rolar até o topo. Com fundo 92% opaco o blur nem fazia diferença ali. */
+body.over-hero .header{backdrop-filter:none}
 body.home-top .header .logo small{color:rgba(255,255,255,.65)}
 body.home-top .header .hbtn:hover{color:var(--gold-soft)}
 body.home-top .header .count{background:var(--white);color:var(--black)}
@@ -283,6 +291,7 @@ body.menu-open .header .count{background:var(--black);color:var(--bg)}
 .hero__video{
   position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   opacity:0;transition:opacity 1200ms var(--ease-lux);
+  will-change:transform,opacity;backface-visibility:hidden;
 }
 .hero__video.playing{opacity:1}
 /* Clipe 1: enquadramento completo e zoom lento em direção ao rosto */
@@ -984,7 +993,7 @@ main{min-height:60vh}
         <span class="lbl">Buscar</span>
       </button>
     </div>
-    <a href="#/" class="logo" aria-label="LIONN — página inicial">LIONN<small>EYEWEAR</small></a>
+    <a href="#/" class="logo" data-home-logo aria-label="LIONN — página inicial">LIONN<small>EYEWEAR</small></a>
     <div class="header__right">
       <a class="hbtn hbtn--icon" href="#/wishlist" aria-label="Favoritos">
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21C7 16.5 3 13.2 3 9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 4.2-4 7.5-9 12z"/></svg>
@@ -1045,7 +1054,7 @@ main{min-height:60vh}
 <!-- MOBILE MENU -->
 <nav class="mmenu" id="mmenu" aria-label="Menu mobile">
   <div class="mmenu__head">
-    <span class="logo" style="font-size:18px">LIONN</span>
+    <a href="#/" class="logo" data-home-logo style="font-size:18px" aria-label="LIONN — página inicial">LIONN</a>
     <button id="mmenuClose" aria-label="Fechar menu">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
@@ -1077,7 +1086,7 @@ main{min-height:60vh}
 <div class="search-ov" id="searchOv" role="dialog" aria-modal="true" aria-label="Busca">
   <div class="container">
     <div class="search-ov__head">
-      <span class="logo" style="font-size:19px">LIONN</span>
+      <a href="#/" class="logo" data-home-logo style="font-size:19px" aria-label="LIONN — página inicial">LIONN</a>
       <button id="searchClose" aria-label="Fechar busca">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
@@ -1184,15 +1193,15 @@ main{min-height:60vh}
     </div>
   </div>
   <div class="container footer__bottom">
-    <span>© 2026 LIONN Eyewear — Demonstração</span>
-    <span>Desenhado com intenção</span>
+    <span>© 2026 LIONN Eyewear. Todos os direitos reservados.<span id="demoTag"></span></span>
+    <span>Feito no Brasil</span>
   </div>
   <div class="trustbar">
     <div class="container trustbar__grid">
       <div><b><i>◆</i>Envio Expresso</b><p>Entrega rápida para todo o Brasil.</p></div>
       <div><b><i>◆</i>Troca Facilitada</b><p>30 dias para trocas.</p></div>
-      <div><b><i>◆</i>Pagamento Seguro</b><p>Checkout protegido.</p></div>
-      <div><b><i>◆</i>Lionn Concierge</b><p>Atendimento personalizado.</p></div>
+      <div><b><i>◆</i>Pagamento Seguro</b><p>PIX, cartão em até 10x e boleto.</p></div>
+      <div><b><i>◆</i>Lionn Concierge</b><p>WhatsApp de segunda a sexta, 9h às 18h.</p></div>
     </div>
   </div>
 </footer>
@@ -1239,7 +1248,7 @@ main{min-height:60vh}
     <div class="popup__in">
       <span class="eyebrow eyebrow--plain">Convite Privado</span>
       <h3>JOIN THE LIONN SOCIETY.</h3>
-      <p>Ganhe 10% no primeiro pedido e acesso privado aos próximos lançamentos.</p>
+      <p>Ganhe 10% no primeiro pedido com o cupom <b>LIONN10</b> e acesso antecipado aos próximos lançamentos.</p>
       <input type="email" id="popupEmail" placeholder="seu@email.com" aria-label="Email">
       <button class="btn btn--primary btn--block" id="popupJoin">Desbloquear Acesso</button>
     </div>
@@ -1247,6 +1256,12 @@ main{min-height:60vh}
 </div>
 
 <script>
+/* Avisos de "ambiente de teste" (checkout, FAQ, rodapé) só aparecem em localhost, file://,
+   hosts de teste/staging ou com ?demo=1 na URL. No domínio final o cliente nunca os vê. */
+const DEMO_ENV = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || location.protocol === "file:" ||
+                 /(^|\.)(test|teste|staging|homolog|preview)\b/.test(location.hostname) || /[?&]demo=1\b/.test(location.search);
+const demoNote = (t) => DEMO_ENV ? `<span class="demo-note">${t}</span>` : "";
+
 /* ============================================================
    LIONN — Application
    Vanilla JS SPA · hash router · localStorage persistence
@@ -1256,53 +1271,44 @@ main{min-height:60vh}
 /* ---------------- Image sources (demo — Unsplash) ---------------- */
 const IMG_BASE = "https://images.unsplash.com/";
 const u = (id, w = 1000) => `${IMG_BASE}${id}?auto=format&fit=crop&w=${w}&q=80`;
+/* Pexels (licença livre, sem atribuição) — a URL da imagem deriva do id numérico da foto */
+const PX = (id, w = 1000) => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=${w}`;
 
 const IMGS = {
-  hero: u("photo-1534030347209-467a5b0ad3e6", 2000),
-  menuFeature: u("photo-1469334031218-e382a71b716b", 900),
-  editorial: u("photo-1483985988355-763728e1935b", 2000),
-  story: u("photo-1526045478516-99145907023c", 1100),
-  aboutHero: u("photo-1441984904996-e0b6ba687e04", 2000),
-  about1: u("photo-1511556820780-d912e42b4980", 1000),
-  about2: u("photo-1517948430535-1e2469d314fe", 1000),
-  about3: u("photo-1584036553516-bf83210aa16c", 1000),
-  catSun: u("photo-1529626455594-4ff0802cfb7e", 800),
-  catOpt: u("photo-1574258495973-f010dfbb5371", 800),
-  catSig: u("photo-1519085360753-af0119f7cbe7", 800),
-  catNew: u("photo-1515886657613-9f3515b0c78f", 800),
-  him: u("photo-1507003211169-0a1dd7228f2d", 900),
-  her: u("photo-1524504388940-b1c1722653e1", 900),
-  uni: u("photo-1488161628813-04466f872be2", 900),
-  ig1: u("photo-1509631179647-0177331693ae", 600),
-  ig2: u("photo-1492562080023-ab3db95bfbce", 600),
-  ig3: u("photo-1487412720507-e7ab37603c6f", 600),
-  ig4: u("photo-1500648767791-00dcc994a43e", 600),
-  ig5: u("photo-1539109136881-3be0616acf4b", 600),
-  ig6: u("photo-1496747611176-843222e1e57c", 600),
+  /* Regra: toda foto do site mostra óculos — no rosto de alguém ou o produto em si.
+     (As antigas de retrato sem óculos, loja de roupa e pincéis de maquiagem saíram.) */
+  hero: PX(20748546, 2000),        /* homem de terno e óculos escuros — poster do vídeo */
+  menuFeature: PX(24018697, 900),  /* mulher elegante ajustando os óculos */
+  editorial: PX(13119234, 2000),   /* mulher de óculos escuros em carro de luxo */
+  story: PX(36846593, 1100),       /* armação havana na mão, painel do carro */
+  aboutHero: PX(27557003, 2000),   /* clientes experimentando armações na loja */
+  about1: PX(29191795, 1000),      /* armação de grau havana com revista */
+  about2: u("photo-1517948430535-1e2469d314fe", 1000), /* armação sobre tabela de visão */
+  about3: u("photo-1584036553516-bf83210aa16c", 1000), /* clubmaster preto */
+  catSun: PX(13924549, 800),       /* retrato de mulher de óculos de sol na praia, mar ao fundo */
+  catOpt: PX(8085950, 800),        /* mulher usando armação de grau preta */
+  catSig: PX(10679231, 800),       /* homem de terno bege e óculos escuros */
+  catNew: PX(17798580, 800),       /* mulher sorrindo de óculos escuros */
+  him: PX(14379330, 900),          /* homem de terno cinza e óculos escuros */
+  her: PX(20456559, 900),          /* mulher elegante de óculos escuros */
+  uni: PX(29529786, 900),          /* casal com armações transparentes */
+  ig1: PX(36005639, 600),
+  ig2: PX(31497525, 600),
+  ig3: PX(7066266, 600),
+  ig4: PX(8364109, 600),
+  ig5: PX(30036564, 600),
+  ig6: PX(2881624, 600),
 };
 
 /* pool of product photography (frames / editorial close-ups) */
-const PPOOL = [
-  "photo-1511499767150-a48a237f0083",
-  "photo-1572635196237-14b3f281503f",
-  "photo-1577803645773-f96470509666",
-  "photo-1508296695146-257a814070b4",
-  "photo-1473496169904-658ba7c44d8a",
-  "photo-1556306535-0f09a537f0a3",
-  "photo-1574258495973-f010dfbb5371",
-  "photo-1591076482161-42ce6da69f67",
-  "photo-1614715838608-dd527c46231d",
-  "photo-1610136649349-0f646f318053",
-  "photo-1625591339971-4c9a87a66871",
-  "photo-1526045478516-99145907023c",
-  "photo-1584036553516-bf83210aa16c",
-  "photo-1511556820780-d912e42b4980",
-  "photo-1517948430535-1e2469d314fe",
-  "photo-1534030347209-467a5b0ad3e6",
-  "photo-1529626455594-4ff0802cfb7e",
-  "photo-1524504388940-b1c1722653e1",
-];
-const pimg = (i, w = 1000) => u(PPOOL[i % PPOOL.length], w);
+/* Fotos de produto: Pexels (licença livre, sem atribuição). Cada produto declara
+   explicitamente suas fotos em `photos` — nada de sortear de um pool genérico:
+     main   → foto do produto (card, quick view, 1ª da galeria)
+     colors → uma foto por cor, na MESMA ordem de `colors` (troca ao clicar no swatch)
+     wear   → pessoa usando (hover do card e "em uso" na galeria)
+     wear2  → editorial largo na galeria
+     alt    → outro ângulo / detalhe na galeria
+   Todas foram conferidas uma a uma: só óculos, sem logos de outras marcas. (PX() está definido junto com IMGS.) */
 
 /* ---------------- Catalog data ---------------- */
 const COLORS = {
@@ -1316,9 +1322,47 @@ const COLORS = {
   stone:  { key:"transparent", name:"Stone",   hex:"#CFC8B8" },
 };
 
+/* Fotos de apoio por cor de armação. Quando o cliente troca a cor, a galeria INTEIRA
+   passa para fotos daquela cor (produto + pessoa usando), não só a primeira. */
+const COLOR_POOL = {
+  black:       { product:[14090246, 8360292, 34467082, 11516772, 25389282, 33129356, 31259697, 10882421, 4439427, 6127368, 36581424, 29538709, 2097085, 8104329],
+                 wear:[26824092, 17085032, 13505069, 10948907, 38024773, 27806642, 33402177, 29454323, 20456559, 14379330, 3598262, 24018697, 11651941, 10173294, 27520959] },
+  gold:        { product:[700728, 9408698, 15926528, 10837794, 30271002, 10837793, 11581712, 29332838, 18002479, 38990836, 38868617, 21547041],
+                 wear:[2881624, 20742493, 35306538, 12510771, 5376562, 10200140, 764876, 37607903, 15535412, 36005639] },
+  havana:      { product:[29538712, 29538710, 29538703, 29538707, 26575040, 26575039, 11882776, 29538719, 5752395, 29191795, 5752242, 36846593, 10837797, 29332844],
+                 wear:[28194052, 29834163, 7407794, 13119234, 28411078, 34463887, 9940873, 36005644] },
+  silver:      { product:[10220086, 10220084, 13430471, 13430479, 13430470, 32677214, 32677238, 1499481],
+                 wear:[5095941, 12809418, 19186834, 30036567, 18332552, 11269994] },
+  transparent: { product:[29274469, 26050119, 29274466, 28368510, 36825023, 28295161, 29550559],
+                 wear:[31210248, 4836878, 8453932, 29617021, 13515059, 8085950, 29529786] },
+};
+/* Galeria da página do produto para a cor k: principal · outro ângulo · editorial (largo) · detalhe · em uso.
+   Cor 0 usa o conjunto curado do produto; as demais montam o conjunto a partir do COLOR_POOL,
+   com um deslocamento por produto para vizinhos de catálogo não repetirem as mesmas fotos. */
+function galleryFor(p, k = 0) {
+  const ph = p.photos || {};
+  const c = (p.colors && p.colors[k]) || (p.colors && p.colors[0]) || COLORS.black;
+  const key = c.key === "smoke" ? "black" : c.key;
+  const pool = COLOR_POOL[key] || COLOR_POOL.black;
+  const mainId = ph.colors && ph.colors[k] ? ph.colors[k] : ph.main;
+  const used = new Set([mainId, ph.main, ph.alt, ph.wear, ph.wear2]);
+  const pick = (arr, seed) => {
+    for (let i = 0; i < arr.length; i++) { const id = arr[(seed + i) % arr.length]; if (!used.has(id)) { used.add(id); return id; } }
+    return arr[seed % arr.length];
+  };
+  const seed = p.id * 7 + k * 3;
+  if (k === 0 && ph.alt) {
+    return [PX(mainId), PX(ph.alt), PX(ph.wear2 || ph.wear || mainId, 1600), PX(pick(pool.product, seed)), PX(ph.wear || pick(pool.wear, seed))];
+  }
+  return [PX(mainId), PX(pick(pool.product, seed)), PX(pick(pool.wear, seed), 1600), PX(pick(pool.product, seed + 4)), PX(pick(pool.wear, seed + 4))];
+}
+
 function makeProduct(i, o) {
-  const gallery = [pimg(o.img), pimg(o.img + 5), pimg(o.img + 9), pimg(o.img + 3), pimg(o.img + 12)];
-  return Object.assign({
+  const ph = o.photos || {};
+  const main = PX(ph.main);
+  const wear = ph.wear ? PX(ph.wear) : main;
+  const colorImages = (o.colors || [COLORS.black]).map((c, k) => ph.colors && ph.colors[k] ? PX(ph.colors[k]) : main);
+  const p = Object.assign({
     id: i,
     slug: o.name.toLowerCase().replace(/\s+/g, "-"),
     category: "sunglasses",
@@ -1337,53 +1381,81 @@ function makeProduct(i, o) {
     bestseller: false,
     newArrival: false,
     signature: false,
-    images: gallery,
-    shortDescription: "Proporções arquitetônicas e acabamento de precisão.",
-    description: "Construído em acetato italiano de alta densidade com dobradiças de metal escovado, o " + o.name + " traduz a assinatura Lionn: presença silenciosa, proporção exata e conforto para o uso diário. Cada armação passa por acabamento manual antes de deixar o ateliê.",
+    images: [main],        /* substituído por galleryFor(p, 0) logo abaixo */
+    hoverImage: wear,      /* hover do card: a armação no rosto */
+    colorImages,           /* alinhado com `colors` */
+    shortDescription: "Acetato italiano, dobradiças de metal e lentes UV400.",
+    description: "Armação em acetato italiano de alta densidade, dobradiças de metal escovado e lentes com proteção UV400. O " + o.name + " é montado e polido à mão no ateliê e vai para você com estojo rígido e flanela.",
   }, o);
+  p.images = galleryFor(p, 0);
+  return p;
 }
 
 const PRODUCTS = [
-  makeProduct(1,  { name:"Lionn Monaco",     price:1890, img:0,  category:"sunglasses", gender:"men",    shape:"square",    material:"Acetato italiano", colors:[COLORS.smoke, COLORS.blkgold, COLORS.havana], bestseller:true, badge:"MAIS VENDIDO", rating:4.9, reviews:184, shortDescription:"O ícone quadrado da casa." }),
-  makeProduct(2,  { name:"Lionn Milano",     price:1690, img:1,  category:"sunglasses", gender:"women",  shape:"cateye",    colors:[COLORS.black, COLORS.havana, COLORS.stone], bestseller:true, badge:"MAIS VENDIDO", rating:4.9, reviews:151, shortDescription:"Cat eye contemporâneo e afiado." }),
-  makeProduct(3,  { name:"Lionn Roma",       price:2190, img:2,  category:"sunglasses", gender:"unisex", shape:"round",     material:"Metal escovado", colors:[COLORS.blkgold, COLORS.silver, COLORS.black], bestseller:true, badge:"MAIS VENDIDO", rating:4.8, reviews:132 }),
-  makeProduct(4,  { name:"Lionn Firenze",    price:1490, img:3,  category:"optical",    gender:"women",  shape:"rectangle", colors:[COLORS.trans, COLORS.havana, COLORS.black], collection:"essential", rating:4.7, reviews:88, shortDescription:"Leveza óptica para o dia inteiro." }),
-  makeProduct(5,  { name:"Lionn Capri",      price:1290, img:4,  category:"sunglasses", gender:"women",  shape:"round",     colors:[COLORS.stone, COLORS.gold, COLORS.black], collection:"essential", newArrival:true, badge:"NOVO", rating:4.8, reviews:64 }),
-  makeProduct(6,  { name:"Lionn Torino",     price:1590, img:5,  category:"optical",    gender:"men",    shape:"rectangle", colors:[COLORS.black, COLORS.havana], collection:"essential", bestseller:true, rating:4.8, reviews:117 }),
-  makeProduct(7,  { name:"Lionn Venezia",    price:2490, img:6,  category:"sunglasses", gender:"women",  shape:"cateye",    material:"Acetato + metal", colors:[COLORS.blkgold, COLORS.havana], badge:"PRIVATE SALE", oldPrice:2790, rating:4.9, reviews:97 }),
-  makeProduct(8,  { name:"Lionn Bellagio",   price:2890, img:7,  category:"sunglasses", gender:"men",    shape:"aviator",   material:"Titânio", signature:true, collection:"signature", badge:"SIGNATURE", colors:[COLORS.blkgold, COLORS.silver], rating:5.0, reviews:73, shortDescription:"Aviador em titânio de produção limitada." }),
-  makeProduct(9,  { name:"Lionn Portofino",  price:1790, img:8,  category:"sunglasses", gender:"unisex", shape:"round",     colors:[COLORS.havana, COLORS.black, COLORS.gold], bestseller:true, rating:4.8, reviews:109 }),
-  makeProduct(10, { name:"Lionn Amalfi",     price:1390, img:9,  category:"sunglasses", gender:"women",  shape:"square",    colors:[COLORS.stone, COLORS.black], collection:"essential", newArrival:true, badge:"NOVO", rating:4.7, reviews:41 }),
-  makeProduct(11, { name:"Lionn Verona",     price:1190, img:10, category:"optical",    gender:"unisex", shape:"round",     colors:[COLORS.trans, COLORS.black, COLORS.havana], collection:"essential", rating:4.7, reviews:82 }),
-  makeProduct(12, { name:"Lionn Sicilia",    price:2290, img:11, category:"sunglasses", gender:"men",    shape:"rectangle", colors:[COLORS.black, COLORS.smoke], rating:4.8, reviews:76 }),
-  makeProduct(13, { name:"Lionn Como",       price:1990, img:12, category:"optical",    gender:"men",    shape:"square",    material:"Titânio", colors:[COLORS.silver, COLORS.black], newArrival:true, badge:"NOVO", rating:4.9, reviews:55 }),
-  makeProduct(14, { name:"Lionn Palermo",    price:990,  img:13, category:"sunglasses", gender:"unisex", shape:"square",    colors:[COLORS.black, COLORS.havana], collection:"essential", rating:4.6, reviews:129 }),
-  makeProduct(15, { name:"Lionn Ravello",    price:3290, img:14, category:"sunglasses", gender:"women",  shape:"cateye",    material:"Acetato japonês", signature:true, collection:"signature", badge:"SIGNATURE", colors:[COLORS.blkgold, COLORS.black], rating:5.0, reviews:38 }),
-  makeProduct(16, { name:"Lionn Positano",   price:1490, img:15, category:"sunglasses", gender:"women",  shape:"round",     colors:[COLORS.gold, COLORS.stone, COLORS.havana], newArrival:true, badge:"NOVO", rating:4.8, reviews:47 }),
-  makeProduct(17, { name:"Lionn Vittorio",   price:2690, img:16, category:"optical",    gender:"men",    shape:"rectangle", material:"Titânio", colors:[COLORS.black, COLORS.silver], rating:4.9, reviews:61 }),
-  makeProduct(18, { name:"Lionn Imperia",    price:2590, img:17, category:"sunglasses", gender:"unisex", shape:"aviator",   material:"Metal escovado", colors:[COLORS.blkgold, COLORS.silver], bestseller:true, rating:4.8, reviews:93 }),
-  makeProduct(19, { name:"Lionn Aurea",      price:4290, img:2,  category:"sunglasses", gender:"women",  shape:"round",     material:"Titânio banhado a ouro", signature:true, collection:"limited", badge:"SIGNATURE", colors:[COLORS.gold, COLORS.blkgold], stock:4, rating:5.0, reviews:22, shortDescription:"A peça mais rara da coleção." }),
-  makeProduct(20, { name:"Lionn Firenze II", price:1590, img:6,  category:"optical",    gender:"women",  shape:"cateye",    colors:[COLORS.havana, COLORS.trans], newArrival:true, badge:"NOVO", rating:4.7, reviews:29 }),
-  makeProduct(21, { name:"Lionn Nero",       price:2190, img:1,  category:"sunglasses", gender:"men",    shape:"square",    colors:[COLORS.black, COLORS.smoke], rating:4.8, reviews:71, shortDescription:"Monocromático absoluto." }),
-  makeProduct(22, { name:"Lionn Leone",      price:4900, img:7,  category:"sunglasses", gender:"men",    shape:"aviator",   material:"Titânio + acetato japonês", signature:true, collection:"limited", badge:"SIGNATURE", colors:[COLORS.blkgold, COLORS.black], stock:3, rating:5.0, reviews:17, shortDescription:"A assinatura máxima da casa." }),
-  makeProduct(23, { name:"Lionn Savona",     price:1090, img:9,  category:"optical",    gender:"unisex", shape:"rectangle", colors:[COLORS.black, COLORS.trans], collection:"essential", rating:4.6, reviews:58 }),
-  makeProduct(24, { name:"Lionn Valenza",    price:2990, img:12, category:"sunglasses", gender:"unisex", shape:"round",     material:"Acetato japonês", signature:true, collection:"signature", badge:"SIGNATURE", colors:[COLORS.havana, COLORS.blkgold], newArrival:true, rating:4.9, reviews:26 }),
+  makeProduct(1,  { name:"Lionn Monaco",     price:1890, category:"sunglasses", gender:"men",    shape:"square",    material:"Acetato italiano", colors:[COLORS.smoke, COLORS.blkgold, COLORS.havana], bestseller:true, badge:"MAIS VENDIDO", rating:4.9, reviews:184, shortDescription:"Quadrado clássico, o mais vendido da linha.",
+                    photos:{ main:14090246, colors:[14090246, 10837793, 29538712], wear:26824092, wear2:27520959, alt:29332844 } }),
+  makeProduct(2,  { name:"Lionn Milano",     price:1690, category:"sunglasses", gender:"women",  shape:"cateye",    colors:[COLORS.black, COLORS.havana, COLORS.stone], bestseller:true, badge:"MAIS VENDIDO", rating:4.9, reviews:151, shortDescription:"Cat eye com hastes finas de metal.",
+                    photos:{ main:29538709, colors:[29538709, 29538710, 28368510], wear:3598262, wear2:28411078, alt:29538703 } }),
+  makeProduct(3,  { name:"Lionn Roma",       price:2190, category:"sunglasses", gender:"unisex", shape:"round",     material:"Metal escovado", colors:[COLORS.blkgold, COLORS.silver, COLORS.black], bestseller:true, badge:"MAIS VENDIDO", rating:4.8, reviews:132,
+                    photos:{ main:700728, colors:[700728, 10220086, 1624952], wear:2881624, wear2:36005639, alt:2097085 } }),
+  makeProduct(4,  { name:"Lionn Firenze",    price:1490, category:"optical",    gender:"women",  shape:"rectangle", colors:[COLORS.trans, COLORS.havana, COLORS.black], collection:"essential", rating:4.7, reviews:88, shortDescription:"Armação de grau leve, para o dia inteiro.",
+                    photos:{ main:29274469, colors:[29274469, 5752395, 25389282], wear:31210248, wear2:4836878, alt:26050119 } }),
+  makeProduct(5,  { name:"Lionn Capri",      price:1290, category:"sunglasses", gender:"women",  shape:"round",     colors:[COLORS.stone, COLORS.gold, COLORS.black], collection:"essential", newArrival:true, badge:"NOVO", rating:4.8, reviews:64,
+                    photos:{ main:38868617, colors:[38868617, 9408698, 6127368], wear:10200140, wear2:764876, alt:26575039 } }),
+  makeProduct(6,  { name:"Lionn Torino",     price:1590, category:"optical",    gender:"men",    shape:"rectangle", colors:[COLORS.black, COLORS.havana], collection:"essential", bestseller:true, rating:4.8, reviews:117,
+                    photos:{ main:32398468, colors:[32398468, 29191795], wear:19186834, wear2:30036567, alt:33129356 } }),
+  makeProduct(7,  { name:"Lionn Venezia",    price:2490, category:"sunglasses", gender:"women",  shape:"cateye",    material:"Acetato + metal", colors:[COLORS.blkgold, COLORS.havana], badge:"PRIVATE SALE", oldPrice:2790, rating:4.9, reviews:97,
+                    photos:{ main:12901653, colors:[12901653, 29538703], wear:24018697, wear2:9940873, alt:36581424 } }),
+  makeProduct(8,  { name:"Lionn Bellagio",   price:2890, category:"sunglasses", gender:"men",    shape:"aviator",   material:"Titânio", signature:true, collection:"signature", badge:"SIGNATURE", colors:[COLORS.blkgold, COLORS.silver], rating:5.0, reviews:73, shortDescription:"Aviador em titânio, produção limitada.",
+                    photos:{ main:29332838, colors:[29332838, 32677214], wear:20742493, wear2:35306538, alt:11581712 } }),
+  makeProduct(9,  { name:"Lionn Portofino",  price:1790, category:"sunglasses", gender:"unisex", shape:"round",     colors:[COLORS.havana, COLORS.black, COLORS.gold], bestseller:true, rating:4.8, reviews:109,
+                    photos:{ main:26575040, colors:[26575040, 2097085, 15926528], wear:28194052, wear2:36005644, alt:26575039 } }),
+  makeProduct(10, { name:"Lionn Amalfi",     price:1390, category:"sunglasses", gender:"women",  shape:"square",    colors:[COLORS.stone, COLORS.black], collection:"essential", newArrival:true, badge:"NOVO", rating:4.7, reviews:41,
+                    photos:{ main:36825023, colors:[36825023, 14090246], wear:27806642, wear2:33402177, alt:28368510 } }),
+  makeProduct(11, { name:"Lionn Verona",     price:1190, category:"optical",    gender:"unisex", shape:"round",     colors:[COLORS.trans, COLORS.black, COLORS.havana], collection:"essential", rating:4.7, reviews:82,
+                    photos:{ main:1499481, colors:[1499481, 4439427, 5752242], wear:8453932, wear2:29617021, alt:26050119 } }),
+  makeProduct(12, { name:"Lionn Sicilia",    price:2290, category:"sunglasses", gender:"men",    shape:"rectangle", colors:[COLORS.black, COLORS.smoke], rating:4.8, reviews:76,
+                    photos:{ main:8360292, colors:[8360292, 34467082], wear:17085032, wear2:13505069, alt:11516772 } }),
+  makeProduct(13, { name:"Lionn Como",       price:1990, category:"optical",    gender:"men",    shape:"square",    material:"Titânio", colors:[COLORS.silver, COLORS.black], newArrival:true, badge:"NOVO", rating:4.9, reviews:55,
+                    photos:{ main:13430471, colors:[13430471, 33129356], wear:5095941, wear2:12809418, alt:13430479 } }),
+  makeProduct(14, { name:"Lionn Palermo",    price:990,  category:"sunglasses", gender:"unisex", shape:"square",    colors:[COLORS.black, COLORS.havana], collection:"essential", rating:4.6, reviews:129,
+                    photos:{ main:31259697, colors:[31259697, 29538707], wear:15474962, wear2:18058117, alt:8104329 } }),
+  makeProduct(15, { name:"Lionn Ravello",    price:3290, category:"sunglasses", gender:"women",  shape:"cateye",    material:"Acetato japonês", signature:true, collection:"signature", badge:"SIGNATURE", colors:[COLORS.blkgold, COLORS.black], rating:5.0, reviews:38,
+                    photos:{ main:21547041, colors:[21547041, 36581424], wear:13624746, wear2:34463887, alt:29538709 } }),
+  makeProduct(16, { name:"Lionn Positano",   price:1490, category:"sunglasses", gender:"women",  shape:"round",     colors:[COLORS.gold, COLORS.stone, COLORS.havana], newArrival:true, badge:"NOVO", rating:4.8, reviews:47,
+                    photos:{ main:9408698, colors:[9408698, 10220086, 11882776], wear:37607903, wear2:15535412, alt:700728 } }),
+  makeProduct(17, { name:"Lionn Vittorio",   price:2690, category:"optical",    gender:"men",    shape:"rectangle", material:"Titânio", colors:[COLORS.black, COLORS.silver], rating:4.9, reviews:61,
+                    photos:{ main:25389282, colors:[25389282, 13430479], wear:18332552, wear2:11269994, alt:32398468 } }),
+  makeProduct(18, { name:"Lionn Imperia",    price:2590, category:"sunglasses", gender:"unisex", shape:"aviator",   material:"Metal escovado", colors:[COLORS.blkgold, COLORS.silver], bestseller:true, rating:4.8, reviews:93,
+                    photos:{ main:11581712, colors:[11581712, 32677238], wear:12510771, wear2:5376562, alt:29332838 } }),
+  makeProduct(19, { name:"Lionn Aurea",      price:4290, category:"sunglasses", gender:"women",  shape:"round",     material:"Titânio banhado a ouro", signature:true, collection:"limited", badge:"SIGNATURE", colors:[COLORS.gold, COLORS.blkgold], stock:4, rating:5.0, reviews:22, shortDescription:"Titânio banhado a ouro. Poucas unidades.",
+                    photos:{ main:10837794, colors:[10837794, 30271002], wear:20456559, wear2:13119234, alt:700728 } }),
+  makeProduct(20, { name:"Lionn Firenze II", price:1590, category:"optical",    gender:"women",  shape:"cateye",    colors:[COLORS.havana, COLORS.trans], newArrival:true, badge:"NOVO", rating:4.7, reviews:29,
+                    photos:{ main:5752395, colors:[5752395, 26050119], wear:13515059, wear2:8085950, alt:29191795 } }),
+  makeProduct(21, { name:"Lionn Nero",       price:2190, category:"sunglasses", gender:"men",    shape:"square",    colors:[COLORS.black, COLORS.smoke], rating:4.8, reviews:71, shortDescription:"Preto total, lentes escuras.",
+                    photos:{ main:11516772, colors:[11516772, 10882421], wear:10948907, wear2:38024773, alt:8360292 } }),
+  makeProduct(22, { name:"Lionn Leone",      price:4900, category:"sunglasses", gender:"men",    shape:"aviator",   material:"Titânio + acetato japonês", signature:true, collection:"limited", badge:"SIGNATURE", colors:[COLORS.blkgold, COLORS.black], stock:3, rating:5.0, reviews:17, shortDescription:"Titânio e acetato japonês. Poucas unidades.",
+                    photos:{ main:18002479, colors:[18002479, 32677214], wear:10679231, wear2:4068549, alt:30271002 } }),
+  makeProduct(23, { name:"Lionn Savona",     price:1090, category:"optical",    gender:"unisex", shape:"rectangle", colors:[COLORS.black, COLORS.trans], collection:"essential", rating:4.6, reviews:58,
+                    photos:{ main:33129356, colors:[33129356, 29274466], wear:11651941, wear2:10173294, alt:25389282 } }),
+  makeProduct(24, { name:"Lionn Valenza",    price:2990, category:"sunglasses", gender:"unisex", shape:"round",     material:"Acetato japonês", signature:true, collection:"signature", badge:"SIGNATURE", colors:[COLORS.havana, COLORS.blkgold], newArrival:true, rating:4.9, reviews:26,
+                    photos:{ main:29538719, colors:[29538719, 38990836], wear:29834163, wear2:7407794, alt:11882776 } }),
 ];
 
 const ACCESSORIES = [
-  { id:101, slug:"signature-hard-case", name:"Signature Hard Case", price:390, img:13 },
-  { id:102, slug:"leather-case",        name:"Leather Case",        price:290, img:14 },
-  { id:103, slug:"cleaning-kit",        name:"Cleaning Kit",        price:129, img:10 },
-  { id:104, slug:"gold-chain",          name:"Gold Chain",          price:490, img:8  },
-  { id:105, slug:"black-chain",         name:"Black Chain",         price:350, img:5  },
-  { id:106, slug:"travel-case",         name:"Travel Case",         price:320, img:11 },
-  { id:107, slug:"cleaning-cloth",      name:"Cleaning Cloth",      price:79,  img:3  },
-  { id:108, slug:"eyewear-display",     name:"Eyewear Display",     price:450, img:0  },
+  { id:101, slug:"signature-hard-case", name:"Signature Hard Case", price:390, photos:{ main:8104329 } },
+  { id:102, slug:"leather-case",        name:"Leather Case",        price:290, photos:{ main:10837797 } },
+  { id:103, slug:"cleaning-kit",        name:"Cleaning Kit",        price:129, photos:{ main:1260284 } },
+  { id:104, slug:"gold-chain",          name:"Gold Chain",          price:490, photos:{ main:10837793 } },
+  { id:105, slug:"black-chain",         name:"Black Chain",         price:350, photos:{ main:10220084 } },
+  { id:106, slug:"travel-case",         name:"Travel Case",         price:320, photos:{ main:1973883 } },
+  { id:107, slug:"cleaning-cloth",      name:"Cleaning Cloth",      price:79,  photos:{ main:5107723 } },
+  { id:108, slug:"eyewear-display",     name:"Eyewear Display",     price:450, photos:{ main:25096378 } },
 ].map(a => makeProduct(a.id, Object.assign({}, a, {
   category:"accessories", collection:"objects", shape:"—", gender:"unisex",
   material:"Materiais selecionados", colors:[COLORS.black],
-  shortDescription:"Lionn Objects — cuidado e apresentação.",
-  description:"Parte da linha Lionn Objects: acessórios desenhados para proteger, transportar e apresentar sua armação com o mesmo padrão de acabamento da coleção principal.",
+  shortDescription:"Acessório Lionn para guardar, levar e limpar sua armação.",
+  description:"Acessório da linha Lionn para proteger, transportar e limpar sua armação. Compatível com todos os modelos da coleção.",
   measurements:{ "Linha":"Lionn Objects" }, rating:4.8, reviews:34,
 })));
 
@@ -1391,7 +1463,7 @@ const ALL_ITEMS = PRODUCTS.concat(ACCESSORIES);
 
 const REVIEWS = [
   { stars:5, text:"O Monaco chegou em uma embalagem impecável. A armação tem peso e acabamento de óculos importado de casa grande — parece valer bem mais do que paguei.", author:"Rafael M.", city:"São Paulo, SP" },
-  { stars:5, text:"Uso o Milano todos os dias há quatro meses. As dobradiças continuam firmes e o acetato não perdeu o brilho. Atendimento do concierge foi excelente na troca de tamanho.", author:"Camila T.", city:"Belo Horizonte, MG" },
+  { stars:5, text:"Uso o Milano todos os dias há quatro meses. As dobradiças continuam firmes e o acetato não perdeu o brilho. O atendimento foi excelente na troca de tamanho.", author:"Camila T.", city:"Belo Horizonte, MG" },
   { stars:4, text:"Bellagio é outra categoria. Titânio levíssimo, não marca o nariz. Só demorou dois dias a mais do que o previsto para chegar, por isso quatro estrelas.", author:"André L.", city:"Curitiba, PR" },
   { stars:5, text:"Comprei o Capri de presente e acabei pedindo um para mim. As lentes têm ótima definição contra o sol forte do meio-dia.", author:"Juliana R.", city:"Rio de Janeiro, RJ" },
   { stars:5, text:"A experiência de compra foi tão bem resolvida quanto o produto. Site rápido, troca simples, e o case rígido da linha Objects é um espetáculo à parte.", author:"Pedro H.", city:"Ipatinga, MG" },
@@ -1422,6 +1494,17 @@ const Utils = {
 /* Image fallback + lazy handling */
 function imgHTML(src, alt, cls = "", eager = false) {
   return `<div class="img-frame ${cls}"><img src="${src}" alt="${Utils.esc(alt)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} onload="this.classList.add('loaded')" onerror="LionnUI.imgFail(this)"></div>`;
+}
+/* Troca a foto de um .img-frame com fade (usado ao escolher a cor da armação):
+   tira a classe loaded → opacidade 0 → o onload do <img> devolve a classe quando a nova carregar. */
+function swapImg(img, src) {
+  if (!img || !src || img.getAttribute("src") === src) return;
+  img.classList.remove("loaded");
+  img.src = src;
+}
+/* foto do produto na cor escolhida (cai na principal se a cor não tiver foto própria) */
+function colorImg(p, idx) {
+  return (p.colorImages && p.colorImages[idx]) || p.images[0];
 }
 
 /* ---------------- Store (localStorage) ---------------- */
@@ -1525,7 +1608,7 @@ const Recent = {
 const Cart = {
   KEY: "lionn_cart",
   COUPON_KEY: "lionn_coupon",
-  COUPONS: { LIONN10: 0.10, SOCIETY15: 0.15 },
+  COUPONS: { LIONN10: 0.10, VIP15: 0.15 },
   FREE_THRESHOLD: 1500,
   SHIPPING: {
     standard: { label: "Standard", eta: "4–7 dias úteis", price: 29.90 },
@@ -1603,7 +1686,7 @@ const Cart = {
     const color = l.product.colors[l.colorIdx] || l.product.colors[0];
     return `
       <div class="cart-line" data-key="${l.key}">
-        ${imgHTML(l.product.images[0], l.product.name)}
+        ${imgHTML(colorImg(l.product, l.colorIdx), l.product.name)}
         <div class="cart-line__info">
           <b><a href="#/produto/${l.product.slug}">${l.product.name}</a></b>
           <small>${Utils.esc(color.name)}</small>
@@ -1691,7 +1774,7 @@ const Search = {
 function productCard(p, opts = {}) {
   const badgeCls = p.signature ? "pcard__badge--signature" : (p.newArrival ? "pcard__badge--new" : "");
   const wishActive = Wishlist.has(p.id) ? "active" : "";
-  const img2 = p.images[1] || p.images[0];
+  const img2 = p.hoverImage || p.images[1] || p.images[0]; /* hover: a armação no rosto */
   return `
   <article class="pcard ${opts.reveal ? "reveal-up" : ""}">
     <div class="pcard__media">
@@ -1775,7 +1858,7 @@ const Catalog = {
       <label class="fopt"><input type="checkbox" data-fgroup="${group}" value="${value}" ${s[group].includes(value) ? "checked" : ""}><span class="box"></span>${label}</label>`;
     return `
       <div class="fgroup"><h5>Categoria</h5>
-        ${opt("cat", "sunglasses", "Óculos de Sol")}${opt("cat", "optical", "Óculos de Grau")}${opt("cat", "accessories", "Lionn Objects")}
+        ${opt("cat", "sunglasses", "Óculos de Sol")}${opt("cat", "optical", "Óculos de Grau")}${opt("cat", "accessories", "Acessórios")}
         <label class="fopt"><input type="checkbox" data-fsig ${s.preset === "signature" ? "checked" : ""}><span class="box"></span>Signature</label>
       </div>
       <div class="fgroup"><h5>Gênero</h5>${opt("gender", "men", "Masculino")}${opt("gender", "women", "Feminino")}${opt("gender", "unisex", "Unissex")}</div>
@@ -1811,12 +1894,13 @@ const Pages = {
     return `
     <section class="hero">
       ${imgHTML(IMGS.hero, "Modelo usando óculos Lionn em cenário arquitetônico", "", true)}
-      <video class="hero__video" data-hero-video autoplay muted playsinline preload="auto" aria-hidden="true" tabindex="-1"></video>
-      <video class="hero__video" data-hero-video muted playsinline preload="auto" aria-hidden="true" tabindex="-1"></video>
+      <!-- sem autoplay/preload: o JS define o src, espera o buffer encher (canplaythrough) e só então toca -->
+      <video class="hero__video" data-hero-video muted playsinline preload="none" disablepictureinpicture disableremoteplayback aria-hidden="true" tabindex="-1"></video>
+      <video class="hero__video" data-hero-video muted playsinline preload="none" disablepictureinpicture disableremoteplayback aria-hidden="true" tabindex="-1"></video>
       <div class="container hero__content">
         <span class="eyebrow">LIONN — New Collection</span>
         <h1 class="display-xl">SEE BEYOND ORDINARY.</h1>
-        <p>Precision eyewear designed to define your presence.</p>
+        <p>Óculos de sol e de grau em acetato italiano e titânio, montados à mão. Entrega para todo o Brasil.</p>
         <div class="hero__ctas">
           <a class="btn btn--light" href="#/catalogo">Ver a Coleção <svg width="14" height="10" viewBox="0 0 16 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M0 5h14M10 1l4 4-4 4"/></svg></a>
           <a class="btn btn--ghost-light" href="#/sobre">Conheça a Lionn</a>
@@ -1846,7 +1930,7 @@ const Pages = {
     <section class="section">
       <div class="container">
         <div class="section-head reveal">
-          <div><span class="eyebrow">Seleção Lionn</span><h2 class="display-lg">MAIS VENDIDOS</h2><p class="sub">As armações que definem a temporada.</p></div>
+          <div><span class="eyebrow">Seleção Lionn</span><h2 class="display-lg">NOSSOS ÍCONES.</h2><p class="sub">As armações que definem a temporada.</p></div>
           <a class="view-all" href="#/mais-vendidos">Ver Tudo <svg width="14" height="10" viewBox="0 0 16 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M0 5h14M10 1l4 4-4 4"/></svg></a>
         </div>
         <div class="shelf">${best.map(p => productCard(p, { reveal:true })).join("")}</div>
@@ -1854,12 +1938,12 @@ const Pages = {
     </section>
 
     <section class="editorial">
-      ${imgHTML(IMGS.editorial, "Editorial Lionn — designed for presence")}
+      ${imgHTML(IMGS.editorial, "Editorial Lionn")}
       <div class="container editorial__content">
         <span class="serif-index">LIONN 01 / 26</span>
-        <h2 class="display-lg">FEITO PARA MARCAR PRESENÇA.</h2>
-        <p>Armações criadas para permanecer relevantes além das temporadas.</p>
-        <a class="btn btn--light" href="#/catalogo">Explorar a Seleção</a>
+        <h2 class="display-lg">ACETATO ITALIANO, MONTAGEM À MÃO.</h2>
+        <p>Armações feitas para o uso diário, com lentes UV400 e 12 meses de garantia.</p>
+        <a class="btn btn--light" href="#/catalogo?cat=sunglasses">Ver óculos de sol</a>
       </div>
     </section>
 
@@ -1879,7 +1963,7 @@ const Pages = {
     <section class="section--tight">
       <div class="container">
         <div class="section-head reveal">
-          <div><span class="eyebrow">A Coleção</span><h2 class="display-lg">SELEÇÃO ATUAL</h2></div>
+          <div><span class="eyebrow">Novidades</span><h2 class="display-lg">CHEGOU ESTA TEMPORADA</h2></div>
           <a class="view-all" href="#/catalogo">Ver Tudo <svg width="14" height="10" viewBox="0 0 16 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M0 5h14M10 1l4 4-4 4"/></svg></a>
         </div>
         <div class="shelf">${collection.map(p => productCard(p, { reveal:true })).join("")}</div>
@@ -1901,7 +1985,7 @@ const Pages = {
     <section class="signature-sec section">
       <div class="container">
         <div class="section-head reveal">
-          <div><span class="eyebrow">Lionn Signature</span><h2 class="display-lg">FEITO PARA SE TORNAR ÍCONE.</h2><p class="lead" style="margin-top:14px;max-width:48ch">Nossas construções mais refinadas. Produção limitada. Materiais excepcionais.</p></div>
+          <div><span class="eyebrow">Lionn Signature</span><h2 class="display-lg">LIONN SIGNATURE.</h2><p class="lead" style="margin-top:14px;max-width:48ch">Titânio, acetato japonês e produção limitada. Cada peça sai numerada.</p></div>
           <a class="view-all" href="#/signature">Descobrir <svg width="14" height="10" viewBox="0 0 16 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M0 5h14M10 1l4 4-4 4"/></svg></a>
         </div>
         <div class="shelf" style="grid-template-columns:repeat(3,1fr)">${sig.map(p => productCard(p, { reveal:true })).join("")}</div>
@@ -1930,9 +2014,9 @@ const Pages = {
         <div class="reveal-image">${imgHTML(IMGS.story, "Detalhe de construção de armação Lionn")}</div>
         <div class="story__text reveal">
           <span class="eyebrow">The Lionn Standard</span>
-          <h2 class="display-md">FEITO COM INTENÇÃO.</h2>
-          <p class="lead">Cada proporção, dobradiça e acabamento é desenhado para equilibrar identidade visual e conforto diário.</p>
-          <a class="btn btn--outline" href="#/sobre">Conheça Nosso Processo</a>
+          <h2 class="display-md">DOBRADIÇA DE METAL, POLIMENTO À MÃO.</h2>
+          <p class="lead">Cada armação é polida e ajustada manualmente antes de sair do ateliê, e tem 12 meses de garantia contra defeitos de fabricação.</p>
+          <a class="btn btn--outline" href="#/sobre">Conheça o ateliê</a>
         </div>
       </div>
     </section>
@@ -1940,8 +2024,8 @@ const Pages = {
     <section class="section--tight">
       <div class="container">
         <div class="reviews__head reveal">
-          <span class="eyebrow eyebrow--plain" style="justify-content:center">Palavras de Clientes</span>
-          <h2 class="display-md" style="margin-top:14px">VISTO ATRAVÉS DA LIONN.</h2>
+          <span class="eyebrow eyebrow--plain" style="justify-content:center">Avaliações</span>
+          <h2 class="display-md" style="margin-top:14px">O QUE OS CLIENTES DIZEM</h2>
           <div class="reviews__score" style="margin-top:26px">4.9</div>
           <div class="stars" aria-label="4.9 de 5 estrelas">★★★★★</div>
           <p class="reviews__base">Baseado em 2.481 avaliações verificadas</p>
@@ -1960,7 +2044,7 @@ const Pages = {
     <section class="section--tight">
       <div class="container">
         <div class="section-head reveal">
-          <div><span class="eyebrow">Cuidado & Presença</span><h2 class="display-lg">LIONN OBJECTS</h2></div>
+          <div><span class="eyebrow">Estojos, correntes e cuidados</span><h2 class="display-lg">LIONN OBJECTS</h2></div>
           <a class="view-all" href="#/catalogo?cat=accessories">Ver Tudo <svg width="14" height="10" viewBox="0 0 16 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M0 5h14M10 1l4 4-4 4"/></svg></a>
         </div>
         <div class="shelf">${acc.map(p => productCard(p, { reveal:true })).join("")}</div>
@@ -1984,12 +2068,12 @@ const Pages = {
       <div class="container reveal">
         <span class="eyebrow eyebrow--plain">Acesso Privado</span>
         <h2 class="display-lg" style="margin-top:16px">JOIN THE LIONN SOCIETY.</h2>
-        <p class="lead">Acesso antecipado a coleções, lançamentos privados e privilégios selecionados.</p>
+        <p class="lead">Cadastre seu email e ganhe o cupom <b>LIONN10</b>: 10% de desconto no primeiro pedido, além de acesso antecipado aos lançamentos.</p>
         <form class="newsletter__form" id="newsletterForm" novalidate>
           <input type="email" placeholder="seu@email.com" aria-label="Seu email" required>
           <button type="submit">Entrar <svg width="14" height="10" viewBox="0 0 16 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M0 5h14M10 1l4 4-4 4"/></svg></button>
         </form>
-        <small>Sem spam. Apenas o essencial, quando importa.</small>
+        <small>Sem spam. Você cancela quando quiser.</small>
       </div>
     </section>`;
   },
@@ -2032,13 +2116,13 @@ const Pages = {
     return this.listing({ eyebrow:"Coleção Lionn", title:"TODOS OS ÓCULOS", sub:"Todas as armações Lionn, em um só lugar.", params });
   },
   novidades() {
-    return this.listing({ eyebrow:"Acabou de Chegar", title:"NOVAS PERSPECTIVAS.", sub:"As mais novas adições ao universo Lionn.", preset:"new" });
+    return this.listing({ eyebrow:"Novidades", title:"NOVIDADES", sub:"Os últimos modelos que chegaram à loja.", preset:"new" });
   },
   maisVendidos() {
-    return this.listing({ eyebrow:"A Escolha Lionn", title:"NOSSOS ÍCONES.", sub:"As armações Lionn mais desejadas.", preset:"best" });
+    return this.listing({ eyebrow:"A Escolha Lionn", title:"NOSSOS ÍCONES.", sub:"Os modelos mais pedidos dos últimos meses.", preset:"best" });
   },
   signature() {
-    return this.listing({ eyebrow:"Lionn Signature", title:"LIONN SIGNATURE.", sub:"Materiais excepcionais. Produção limitada.", dark:true, preset:"signature" });
+    return this.listing({ eyebrow:"Lionn Signature", title:"LIONN SIGNATURE.", sub:"Titânio e acetato japonês, em produção limitada.", dark:true, preset:"signature" });
   },
 
   /* ----- Product page ----- */
@@ -2095,7 +2179,7 @@ const Pages = {
             { t:"Detalhes", b:`<table><tr><td>Material</td><td>${Utils.esc(p.material)}</td></tr><tr><td>Lentes</td><td>${Utils.esc(p.lens)}</td></tr><tr><td>Proteção</td><td>${p.protection}</td></tr><tr><td>Formato</td><td style="text-transform:capitalize">${p.shape}</td></tr></table>` },
             { t:"Medidas da Armação", b:`<table>${Object.entries(p.measurements).map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join("")}</table>` },
             { t:"Envio & Trocas", b:`<p>Envio expresso para todo o Brasil. Frete Standard gratuito em pedidos acima de ${Utils.money(1500)}. Trocas e devoluções em até 30 dias, sem burocracia.</p>` },
-            { t:"Garantia", b:`<p>Garantia Lionn de 12 meses contra defeitos de fabricação, com suporte dedicado do Lionn Concierge.</p>` },
+            { t:"Garantia", b:`<p>Garantia Lionn de 12 meses contra defeitos de fabricação, com atendimento pelo WhatsApp ou email.</p>` },
           ].map((a, i) => `
           <div class="acc-item ${i === 0 ? "open" : ""}">
             <button class="acc-item__head" data-acc aria-expanded="${i === 0}">${a.t}
@@ -2108,13 +2192,13 @@ const Pages = {
     </section>
 
     <section class="section--tight container">
-      <div class="section-head"><div><span class="eyebrow">Complete o Look</span><h2 class="display-md">VOCÊ TAMBÉM PODE GOSTAR</h2></div></div>
+      <div class="section-head"><div><span class="eyebrow">Combina com</span><h2 class="display-md">VOCÊ TAMBÉM PODE GOSTAR</h2></div></div>
       <div class="shelf">${related.map(x => productCard(x)).join("")}</div>
     </section>
 
     ${recent.length ? `
     <section class="section--tight container" style="padding-top:0">
-      <div class="section-head"><div><span class="eyebrow">Sua Jornada</span><h2 class="display-md">VISTOS RECENTEMENTE</h2></div></div>
+      <div class="section-head"><div><span class="eyebrow">Histórico</span><h2 class="display-md">VISTOS RECENTEMENTE</h2></div></div>
       <div class="shelf">${recent.map(x => productCard(x)).join("")}</div>
     </section>` : ""}`;
   },
@@ -2124,7 +2208,7 @@ const Pages = {
     const items = Wishlist.items().map(Utils.byId).filter(Boolean);
     if (!items.length) return `<div class="container empty"><span class="eyebrow eyebrow--plain" style="justify-content:center">Peças Salvas</span><h2 class="display-md" style="margin-top:14px">VOCÊ AINDA NÃO TEM FAVORITOS.</h2><p>Guarde aqui as armações que definem você.</p><a class="btn btn--primary" href="#/catalogo">Explorar Óculos</a></div>`;
     return `
-    <section class="page-hero"><div class="container"><span class="eyebrow">Peças Salvas</span><h1 class="display-lg">SEUS FAVORITOS</h1><p class="sub">${items.length} ${items.length === 1 ? "modelo salvo" : "modelos salvos"}.</p></div></section>
+    <section class="page-hero"><div class="container"><span class="eyebrow">Favoritos</span><h1 class="display-lg">SEUS FAVORITOS</h1><p class="sub">${items.length} ${items.length === 1 ? "modelo salvo" : "modelos salvos"}.</p></div></section>
     <section class="container" style="padding-bottom:var(--section)"><div class="catalog-grid">${items.map(p => productCard(p)).join("")}</div></section>`;
   },
 
@@ -2134,7 +2218,7 @@ const Pages = {
     if (!t.lines.length) return `<div class="container empty"><span class="eyebrow eyebrow--plain" style="justify-content:center">Your Selection</span><h2 class="display-md" style="margin-top:14px">SUA SACOLA ESTÁ VAZIA.</h2><p>As peças que você escolher aparecem aqui.</p><a class="btn btn--primary" href="#/catalogo">Explorar Óculos</a></div>`;
     const ship = Cart.shippingState;
     return `
-    <section class="page-hero"><div class="container"><span class="eyebrow">Revisão</span><h1 class="display-lg">SUA SACOLA</h1></div></section>
+    <section class="page-hero"><div class="container"><span class="eyebrow">Sua sacola</span><h1 class="display-lg">SUA SACOLA</h1></div></section>
     <section class="container cartpage" style="padding-bottom:var(--section)">
       <div>
         ${Cart.freebarHTML(t.merch)}
@@ -2232,13 +2316,13 @@ const Pages = {
               <button type="button" class="pay-tab__head"><span class="dot"></span><b>PIX</b><span class="tag">5% de desconto</span></button>
               <div class="pay-tab__body">
                 <div class="pix-box">
-                  <svg width="120" height="120" viewBox="0 0 21 21" shape-rendering="crispEdges" aria-label="QR Code demonstrativo">
+                  <svg width="120" height="120" viewBox="0 0 21 21" shape-rendering="crispEdges" aria-label="QR Code PIX">
                     <rect width="21" height="21" fill="#fff"/>
                     <path fill="#080808" d="M1 1h5v1H1zM8 1h2v1H8zM12 1h1v1h-1zM15 1h5v1h-5zM1 2h1v1H1zM5 2h1v1H5zM9 2h3v1H9zM15 2h1v1h-1zM19 2h1v1h-1zM1 3h1v1H1zM3 3h1v1H3zM5 3h1v1H5zM7 3h2v1H7zM11 3h2v1h-2zM15 3h1v1h-1zM17 3h1v1h-1zM19 3h1v1h-1zM1 4h1v1H1zM5 4h1v1H5zM8 4h1v1H8zM10 4h3v1h-3zM15 4h1v1h-1zM19 4h1v1h-1zM1 5h5v1H1zM7 5h1v2H7zM9 5h1v1H9zM13 5h1v1h-1zM15 5h5v1h-5zM8 6h2v1H8zM11 6h3v1h-3zM2 7h3v1H2zM6 7h1v1H6zM9 7h1v1H9zM12 7h2v1h-2zM16 7h3v1h-3zM1 8h2v1H1zM4 8h2v1H4zM8 8h1v1H8zM10 8h2v1h-2zM14 8h2v1h-2zM18 8h2v1h-2zM3 9h1v1H3zM6 9h3v1H6zM11 9h1v1h-1zM13 9h1v1h-1zM16 9h1v1h-1zM19 9h1v1h-1zM1 10h1v1H1zM4 10h2v1H4zM7 10h1v1H7zM9 10h3v1H9zM14 10h3v1h-3zM18 10h1v1h-1zM2 11h2v1H2zM6 11h1v1H6zM8 11h1v1H8zM12 11h2v1h-2zM15 11h2v1h-2zM19 11h1v1h-1zM1 12h1v1H1zM3 12h1v1H3zM5 12h3v1H5zM10 12h1v1h-1zM13 12h1v1h-1zM16 12h2v1h-2zM8 13h2v1H8zM11 13h2v1h-2zM14 13h1v1h-1zM17 13h3v1h-3zM1 14h5v1H1zM7 14h2v1H7zM12 14h1v1h-1zM15 14h2v1h-2zM19 14h1v1h-1zM1 15h1v1H1zM5 15h1v1H5zM8 15h1v1H8zM10 15h3v1h-3zM16 15h1v1h-1zM18 15h1v1h-1zM1 16h1v1H1zM3 16h1v1H3zM5 16h1v1H5zM7 16h1v1H7zM9 16h2v1H9zM13 16h2v1h-2zM17 16h2v1h-2zM1 17h1v1H1zM5 17h1v1H5zM8 17h2v1H8zM11 17h1v1h-1zM14 17h2v1h-2zM18 17h1v1h-1zM1 18h5v1H1zM7 18h1v1H7zM9 18h1v1H9zM12 18h2v1h-2zM16 18h2v1h-2zM19 18h1v1h-1z"/>
                   </svg>
                   <div>
                     <p>Aponte a câmera do seu banco para o QR Code. O desconto de 5% já está aplicado ao total.</p>
-                    <span class="demo-note">Demonstration checkout — no real payment will be processed.</span>
+                    ${demoNote("Ambiente de teste: nenhum pagamento é processado.")}
                   </div>
                 </div>
               </div>
@@ -2252,14 +2336,14 @@ const Pages = {
                   ${field("cardExp", "Validade", { mode:"numeric", ph:"MM/AA", err:"Data inválida" })}
                   ${field("cardCvv", "CVV", { mode:"numeric", ph:"000", err:"CVV inválido" })}
                 </div>
-                <span class="demo-note">Simulação — nenhum dado de cartão é armazenado.</span>
+                ${demoNote("Ambiente de teste: nenhum dado de cartão é enviado ou armazenado.")}
               </div>
             </div>
             <div class="pay-tab ${Checkout.pay === "boleto" ? "selected" : ""}" data-pay="boleto">
               <button type="button" class="pay-tab__head"><span class="dot"></span><b>Boleto</b></button>
               <div class="pay-tab__body">
-                <p>O boleto demonstrativo é gerado após a confirmação do pedido, com vencimento em 3 dias úteis.</p>
-                <span class="demo-note">Simulação — nenhum pagamento real será processado.</span>
+                <p>O boleto é gerado após a confirmação do pedido, com vencimento em 3 dias úteis.</p>
+                ${demoNote("Ambiente de teste: nenhum boleto real é emitido.")}
               </div>
             </div>
           </div>
@@ -2270,7 +2354,7 @@ const Pages = {
           <div class="co-items">
             ${t2.lines.map(l => `
             <div class="co-line">
-              ${imgHTML(l.product.images[0], l.product.name)}
+              ${imgHTML(colorImg(l.product, l.colorIdx), l.product.name)}
               <span><b>${l.product.name}</b><small>${Utils.esc((l.product.colors[l.colorIdx] || l.product.colors[0]).name)} · ${l.qty}×</small></span>
               <span class="p">${Utils.money(l.lineTotal)}</span>
             </div>`).join("")}
@@ -2284,7 +2368,7 @@ const Pages = {
           </div>
           <div class="place-order-wrap">
             <button class="btn btn--primary btn--block" id="placeOrder">Finalizar Pedido</button>
-            <p class="secure-note"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="10" width="16" height="11" rx="1"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg> Compra Segura · Demonstração</p>
+            <p class="secure-note"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="10" width="16" height="11" rx="1"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg> Compra Segura${DEMO_ENV ? " · Ambiente de teste" : ""}</p>
           </div>
         </aside>
       </div>
@@ -2299,7 +2383,7 @@ const Pages = {
     <div class="container confirm">
       <div class="confirm__check"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 12.5l5 5L20 6.5"/></svg></div>
       <h1 class="display-lg">WELCOME TO LIONN.</h1>
-      <p class="sub">Seu pedido foi recebido.</p>
+      <p class="sub">A confirmação chega por email em alguns minutos.</p>
       <p class="confirm__order">Pedido ${order.number}</p>
       <div class="confirm__box">
         ${order.items.map(i => `<div class="cart-summary-line"><span>${Utils.esc(i.name)} · ${i.qty}×</span><b>${Utils.money(i.total)}</b></div>`).join("")}
@@ -2326,15 +2410,15 @@ const Pages = {
       </div>
     </section>
     <section class="container" style="padding-block:clamp(60px,7vw,110px) 0">
-      <p class="lead reveal" style="max-width:62ch;font-size:clamp(17px,1.8vw,22px)">A Lionn nasceu da ideia de que eyewear não deve apenas complementar um rosto — deve transformar presença. Cada armação parte de princípios de arquitetura: proporção exata, materiais honestos e uma silhueta que permanece relevante muito além das temporadas.</p>
+      <p class="lead reveal" style="max-width:62ch;font-size:clamp(17px,1.8vw,22px)">A Lionn é uma marca brasileira de óculos de sol e de grau. Desenhamos as armações aqui e produzimos em acetato italiano e titânio, com montagem e polimento feitos à mão no nosso ateliê.</p>
     </section>
     <div class="container">
       ${[
-        { t:"O COMEÇO", e:"01 — Origem", img:IMGS.about1, txt:"Fundada no Brasil com padrões internacionais, a Lionn começou em um pequeno estúdio de design com uma única convicção: precisão vale mais do que excesso. Os primeiros modelos foram desenhados à mão, ajustados milímetro a milímetro." },
-        { t:"FILOSOFIA DE DESIGN", e:"02 — Filosofia", img:IMGS.about2, txt:"Trabalhamos com proporção, ritmo e equilíbrio — os mesmos princípios de uma boa arquitetura. Nada é decorativo por acaso; cada linha existe para servir ao rosto de quem usa." },
-        { t:"MATERIAIS", e:"03 — Materiais", img:IMGS.about3, txt:"Acetato italiano de alta densidade, titânio japonês e metais selecionados. Materiais escolhidos por durabilidade, leveza e pela forma como envelhecem com dignidade." },
-        { t:"CONSTRUÇÃO", e:"04 — Construção", img:IMGS.story, txt:"Dobradiças de precisão, polimento manual e controle de qualidade individual. Antes de deixar o ateliê, cada peça é inspecionada como se fosse única — porque é." },
-        { t:"LIONN STANDARD", e:"05 — O Padrão", img:IMGS.about2, txt:"O Lionn Standard é a nossa régua interna: identidade visual, conforto diário e durabilidade no mesmo nível. Se uma peça não atinge os três, ela não existe." },
+        { t:"O COMEÇO", e:"01 — Origem", img:IMGS.about1, txt:"A Lionn começou em um estúdio pequeno, com dois modelos e uma ideia simples: fazer óculos que a gente mesmo quisesse usar todos os dias. Hoje a coleção tem mais de vinte armações, de sol e de grau." },
+        { t:"COMO DESENHAMOS", e:"02 — Design", img:IMGS.about2, txt:"Cada modelo é provado em rostos diferentes antes de entrar em produção. Ajustamos ponte, largura e hastes até a armação assentar sem apertar e sem escorregar." },
+        { t:"MATERIAIS", e:"03 — Materiais", img:IMGS.about3, txt:"Acetato italiano de alta densidade, titânio japonês e lentes com proteção UV400. Materiais que aguentam anos de uso sem perder cor nem brilho." },
+        { t:"CONSTRUÇÃO", e:"04 — Construção", img:IMGS.story, txt:"Dobradiças de metal, polimento manual e inspeção peça a peça. Cada armação é conferida antes de ser embalada." },
+        { t:"GARANTIA E AJUSTES", e:"05 — Depois da compra", img:IMGS.about2, txt:"Toda armação tem 12 meses de garantia contra defeitos de fabricação e 30 dias para troca. Ajustes de haste e plaqueta são feitos no ateliê." },
       ].map(b => `
       <div class="about-block">
         <div class="reveal-image">${imgHTML(b.img, b.t)}</div>
@@ -2368,8 +2452,8 @@ const Pages = {
         </div>`).join("")}
         <div class="face-card reveal-up" style="display:flex;flex-direction:column;justify-content:center">
           <h3 style="letter-spacing:.14em">AINDA EM DÚVIDA?</h3>
-          <p>O Lionn Concierge ajuda você a encontrar a armação exata, sem compromisso.</p>
-          <a class="btn btn--outline" style="margin-top:22px;align-self:flex-start" href="#/contato">Falar com Concierge</a>
+          <p>Se ainda estiver em dúvida, manda uma mensagem que a gente ajuda a escolher.</p>
+          <a class="btn btn--outline" style="margin-top:22px;align-self:flex-start" href="#/contato">Falar com o Concierge</a>
         </div>
       </div>
     </section>`;
@@ -2379,14 +2463,14 @@ const Pages = {
   faq() {
     const qs = [
       { q:"Os óculos Lionn têm proteção UV?", a:"Sim. Todas as lentes solares Lionn possuem proteção UV400, bloqueando 100% dos raios UVA e UVB." },
-      { q:"Como funciona a garantia?", a:"Garantia Lionn de 12 meses contra defeitos de fabricação, com atendimento dedicado do Lionn Concierge." },
+      { q:"Como funciona a garantia?", a:"Garantia Lionn de 12 meses contra defeitos de fabricação, com atendimento pelo WhatsApp ou email." },
       { q:"Qual o prazo de entrega?", a:"Standard: 4–7 dias úteis. Express: 1–3 dias úteis. Pedidos acima de R$ 1.500 têm frete Standard gratuito." },
       { q:"Posso trocar minha armação?", a:"Sim — você tem 30 dias a partir do recebimento para trocas ou devoluções, sem burocracia." },
       { q:"Posso colocar lentes de grau?", a:"Sim. Todas as armações Lionn aceitam lentes de grau. Leve sua receita a qualquer ótica de confiança." },
       { q:"Como encontro meu tamanho?", a:"Consulte as medidas na página de cada produto e o nosso Guia de Formatos para encontrar a proporção ideal." },
       { q:"Os óculos Lionn são originais?", a:"Cada Lionn é produzido em série controlada, com número de inspeção individual e certificado de autenticidade." },
       { q:"Como cuidar dos meus óculos?", a:"Guarde sempre no case rígido, limpe apenas com a flanela Lionn e evite contato com produtos químicos e calor extremo." },
-      { q:"Quais formas de pagamento são aceitas?", a:"PIX (com 5% de desconto), cartão de crédito em até 10x sem juros e boleto. Nesta demonstração, nenhum pagamento real é processado." },
+      { q:"Quais formas de pagamento são aceitas?", a:"PIX (com 5% de desconto), cartão de crédito em até 10x sem juros e boleto." + (DEMO_ENV ? " Neste ambiente de teste nenhum pagamento é processado." : "") },
     ];
     return `
     <section class="page-hero"><div class="container"><span class="eyebrow">Atendimento</span><h1 class="display-lg">PERGUNTAS FREQUENTES.</h1></div></section>
@@ -2406,7 +2490,7 @@ const Pages = {
   /* ----- Contact ----- */
   contato() {
     return `
-    <section class="page-hero"><div class="container"><span class="eyebrow">Atendimento Pessoal</span><h1 class="display-lg">LIONN CONCIERGE.</h1><p class="sub">Atendimento pessoal para escolher sua próxima armação.</p></div></section>
+    <section class="page-hero"><div class="container"><span class="eyebrow">Atendimento Pessoal</span><h1 class="display-lg">LIONN CONCIERGE.</h1><p class="sub">Dúvidas sobre modelos, medidas, pedidos ou trocas.</p></div></section>
     <section class="container contact-grid" style="padding-bottom:var(--section)">
       <div>
         <form id="contactForm" novalidate>
@@ -2423,9 +2507,9 @@ const Pages = {
         </form>
       </div>
       <div>
-        <div class="contact-info-item"><b>WhatsApp</b><p>(31) 98648-0257</p><small>Atendimento demonstrativo</small></div>
+        <div class="contact-info-item"><b>WhatsApp</b><p>(31) 98648-0257</p><small>Segunda a sexta, 9h às 18h</small></div>
         <div class="contact-info-item"><b>Email</b><p>concierge@lionneyewear.com</p></div>
-        <div class="contact-info-item"><b>Horário</b><p>Segunda a sexta, 9h — 18h</p><small>Sábado, 9h — 13h</small></div>
+        <div class="contact-info-item"><b>Horário</b><p>Segunda a sexta, 9h às 18h</p><small>Sábado, 9h às 13h</small></div>
         <div class="contact-info-item"><b>Instagram</b><p>@lionneyewear</p></div>
       </div>
     </section>`;
@@ -2570,7 +2654,7 @@ const Router = {
       const p = Utils.bySlug(segs[1] || "");
       if (p && desc) desc.setAttribute("content", `${p.name} — ${p.shortDescription} A partir de ${Utils.money(p.price)}. LIONN Eyewear.`);
     } else if (desc) {
-      desc.setAttribute("content", "LIONN Eyewear — óculos premium de sol e de grau. Óculos de precisão desenhados para definir sua presença.");
+      desc.setAttribute("content", "LIONN Eyewear — Óculos de precisão desenhados para definir sua presença.");
     }
 
     if (!keepScroll) Utils.scrollTop();
@@ -2599,19 +2683,66 @@ const Bindings = {
        Clipe 1: zoom-in em direção ao rosto (mantido como estava).
        Clipes 2–4: zoom-out — começam próximos e abrem até revelar a cena inteira. */
     const vids = document.querySelectorAll("[data-hero-video]");
-    if (vids.length === 2) {
+    /* Economia de dados: sem vídeo em conexões lentas ou com "economia de dados" ativa.
+       Aparelhos fracos (≤2 GB de RAM ou ≤2 núcleos) e quem pediu menos movimento
+       ficam só com a imagem estática — evita travar o navegador. */
+    const conn = navigator.connection;
+    const lowEnd = (navigator.deviceMemory && navigator.deviceMemory <= 2) ||
+                   (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) ||
+                   (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    const skipVideo = lowEnd || !!(conn && (conn.saveData || /(^|-)2g$/.test(conn.effectiveType || "")));
+    if (skipVideo) vids.forEach(v => v.remove());
+
+    if (vids.length === 2 && !skipVideo) {
+      const mobile = window.innerWidth <= 768;
+
+      /* Fallback remoto: pede ao Pexels uma renderização menor em vez do master
+         (a URL sem parâmetros devolve o original 4K de 50–60 Mbps / 84–168 MB —
+         era isso que travava o primeiro vídeo em carregamento frio). */
+      const q = mobile ? "?fps=25&w=960&h=540" : "?fps=25&w=1280&h=720";
+      const remote = (id) => `https://www.pexels.com/download/video/${id}/${q}`;
+
+      /* Arquivos locais (gerados por videos/src/encode.sh a partir dos originais 4K):
+         - fps nativo de cada clipe (25/30/60) — sem frames duplicados, sem travadinha
+         - desktop: hero-N.mp4 = crop 1:1 de 2160² direto do master 4K, sem redimensionar
+           (o hero é ~2:1; um 9:16 inteiro desperdiçaria 73% dos pixels fora da tela)
+         - mobile:  hero-N-sm.mp4 = quadro inteiro em 1080x1920
+         - cada um em H.264 (hero-N.mp4, 20–40 Mbps: calibrado por VMAF para ser indistinguível
+           do master — o cliente prefere peso a qualquer perda visível) e AV1 (hero-N.av1.mp4, ~4x menor).
+           AV1 só entra quando mediaCapabilities garante decodificação suave e eficiente
+           (decodificar AV1 2160² por software engasga e esquenta). */
+      let ext = ".mp4";
+      const pickCodec = async () => {
+        try {
+          const mc = navigator.mediaCapabilities;
+          if (!mc || !mc.decodingInfo) return;
+          const info = await mc.decodingInfo({
+            type: "file",
+            video: { contentType: 'video/mp4; codecs="av01.0.13M.08"', /* level 5.1: 2160² @ 60 fps */
+                     width: mobile ? 1080 : 2160, height: mobile ? 1920 : 2160, bitrate: 8000000, framerate: 60 }
+          });
+          if (info.supported && info.smooth && info.powerEfficient) ext = ".av1.mp4";
+        } catch (_) { /* mantém H.264 */ }
+      };
+      const local = (n) => `videos/hero-${n}${mobile ? "-sm" : ""}${ext}`;
+
+      /* Cada clipe tenta primeiro o arquivo local (AV1 ou H.264, definido em boot()).
+         Se não existir no repositório, cai automaticamente para o Pexels.
+         pos/origin: enquadramento no mobile (quadro inteiro). wide: idem no desktop, onde o
+         vídeo já vem recortado 1:1 na faixa certa — por isso a posição fica centrada. */
       const clips = [
-        { id: 34733100, mode: "kb-in"   }, /* homem elegante de chapéu apoiado no carro — mantido */
-        { id: 29285339, mode: "kb-soft", pos: "50% 22%", origin: "50% 26%" }, /* homem de terno — mostra rosto + corpo */
-        { id: 34582163, mode: "kb-soft", pos: "50% 20%", origin: "50% 24%" }, /* mulher elegante — rosto inteiro + torso */
-        { id: 36841808, mode: "kb-out"  }, /* mulher fashion — padrão aprovado */
-      ];
-      const url = (i) => `https://www.pexels.com/download/video/${clips[i].id}/`;
+        { id: 34733100, mode: "kb-in",   wide: { pos: "50% 30%", origin: "50% 15%" } }, /* homem elegante de chapéu apoiado no carro — mantido */
+        { id: 29285339, mode: "kb-soft", pos: "50% 22%", origin: "50% 26%", wide: { pos: "50% 50%", origin: "50% 26%" } }, /* homem de terno — rosto + corpo */
+        { id: 34582163, mode: "kb-soft", pos: "50% 20%", origin: "50% 24%", wide: { pos: "50% 50%", origin: "50% 24%" } }, /* mulher elegante — rosto inteiro + torso */
+        { id: 36841808, mode: "kb-out"  }, /* mulher fashion — padrão aprovado (paisagem; no mobile vem recortada 1:1 no centro) */
+      ].map(c => ({ ...c, srcs: [null, remote(c.id)] })); /* srcs[0] = local, preenchido em boot() */
+      const next = (i) => ((i + 1) % clips.length + clips.length) % clips.length;
       let active = vids[0];
       let fails = 0;
 
       const applyFraming = (el) => {
-        const clip = clips[Number(el.dataset.idx) || 0];
+        let clip = clips[Number(el.dataset.idx) || 0];
+        if (!mobile && clip.wide) clip = clip.wide;
         if (clip.pos) {
           /* Enquadramento definido por clipe: faixa mais baixa para incluir mais do corpo */
           el.style.objectPosition = clip.pos;
@@ -2623,16 +2754,85 @@ const Bindings = {
         el.style.objectPosition = portrait ? "50% 12%" : "50% 28%";
         el.style.transformOrigin = portrait ? "50% 15%" : "50% 28%";
       };
-      const startClip = (i, el) => {
-        el.dataset.idx = ((i % clips.length) + clips.length) % clips.length;
-        el.classList.remove("playing", "kb-in", "kb-out");
-        el.src = url(Number(el.dataset.idx));
-        const pr = el.play();
-        if (pr && pr.catch) pr.catch(() => {});
+
+      const safePlay = (el) => { const pr = el.play(); if (pr && pr.catch) pr.catch(() => {}); };
+
+      /* Só toca quando o buffer permite ir até o fim sem parar (canplaythrough).
+         Tocar assim que chegam os primeiros frames — o comportamento padrão — faz o vídeo
+         parar e retomar a cada segundo num carregamento frio. Teto de 8 s para não travar
+         a sequência caso o evento não venha (alguns navegadores só disparam após play). */
+      const playWhenReady = (el) => {
+        let done = false;
+        const go = () => {
+          if (done) return; done = true;
+          clearTimeout(timer);
+          el.removeEventListener("canplaythrough", go);
+          delete el.dataset.waiting;
+          safePlay(el);
+        };
+        const timer = setTimeout(go, 8000);
+        el.dataset.waiting = "1";
+        if (el.readyState >= 4) go();
+        else el.addEventListener("canplaythrough", go);
       };
+
+      /* defer=true: só carrega (pré-busca do próximo clipe); quem toca é o `ended` do atual */
+      const startClip = (i, el, srcIdx = 0, defer = false) => {
+        el.dataset.idx = ((i % clips.length) + clips.length) % clips.length;
+        el.dataset.srcIdx = srcIdx;
+        el.dataset.defer = defer ? "1" : "";
+        delete el.dataset.releasing;
+        delete el.dataset.prefetched;
+        el.classList.remove("playing", "kb-in", "kb-out", "kb-soft");
+        el.preload = "auto";
+        el.src = clips[Number(el.dataset.idx)].srcs[srcIdx];
+        el.load();
+        if (!defer) playWhenReady(el);
+      };
+      /* Libera o decodificador e os buffers do vídeo que já saiu de cena.
+         Sem isso, os dois <video> ficam ocupando memória o tempo todo. */
+      const release = (el) => {
+        el.dataset.releasing = "1";
+        el.pause();
+        el.removeAttribute("src");
+        el.load();
+      };
+      /* Pré-carrega o próximo clipe no elemento ocioso enquanto o atual ainda toca —
+         a troca acontece com o buffer já cheio, sem repetir o soluço do carregamento.
+         Dispara quando o atual já baixou inteiro ou, no máximo, 5 s antes de acabar,
+         para não disputar banda com o próprio clipe que está tocando. */
+      const prefetchNext = (el) => {
+        if (el !== active || el.dataset.prefetched) return;
+        const idle = el === vids[0] ? vids[1] : vids[0];
+        if (idle.dataset.releasing !== "1" && idle.src) return; /* ainda em uso */
+        el.dataset.prefetched = "1";
+        startClip(next(Number(el.dataset.idx)), idle, 0, true);
+      };
+      const maybePrefetch = (el) => {
+        if (el !== active || el.dataset.prefetched || !el.duration) return;
+        const b = el.buffered;
+        const fully = b.length && b.end(b.length - 1) >= el.duration - 0.5;
+        if (fully || el.duration - el.currentTime <= 5) prefetchNext(el);
+      };
+
+      /* Pausa quando o hero sai da tela ou a aba fica oculta — vídeo invisível
+         não precisa gastar CPU/memória decodificando. */
+      let visible = true, onScreen = true;
+      const sync = () => {
+        if (!active || !active.src || active.dataset.waiting) return;
+        if (visible && onScreen) safePlay(active);
+        else active.pause();
+      };
+      document.addEventListener("visibilitychange", () => { visible = !document.hidden; sync(); });
+      const hero = vids[0].closest(".hero");
+      if (hero && "IntersectionObserver" in window) {
+        new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; sync(); }, { threshold: 0.05 }).observe(hero);
+      }
 
       vids.forEach(el => {
         el.addEventListener("loadedmetadata", () => applyFraming(el));
+        el.addEventListener("progress", () => maybePrefetch(el));
+        el.addEventListener("timeupdate", () => maybePrefetch(el));
 
         el.addEventListener("playing", () => {
           fails = 0;
@@ -2642,24 +2842,43 @@ const Bindings = {
             const old = active;
             active = el;
             old.classList.remove("playing");
-            setTimeout(() => { old.classList.remove("kb-in", "kb-out"); old.pause(); }, 1400);
+            setTimeout(() => { old.classList.remove("kb-in", "kb-out", "kb-soft"); release(old); }, 1400);
           }
         });
 
         el.addEventListener("ended", () => {
           if (el !== active) return;
-          /* o último frame permanece visível enquanto o próximo carrega — sem corte seco */
+          /* o último frame permanece visível até o próximo começar — sem corte seco */
           const idle = el === vids[0] ? vids[1] : vids[0];
-          startClip(Number(el.dataset.idx) + 1, idle);
+          const want = next(Number(el.dataset.idx));
+          if (idle.dataset.defer === "1" && Number(idle.dataset.idx) === want && idle.src) {
+            idle.dataset.defer = "";
+            playWhenReady(idle); /* já pré-carregado: começa na hora */
+          } else {
+            startClip(want, idle);
+          }
         });
 
         el.addEventListener("error", () => {
+          if (el.dataset.releasing) return; /* erro esperado ao esvaziar o src */
+          const clipIdx = Number(el.dataset.idx || 0);
+          const srcIdx = Number(el.dataset.srcIdx || 0);
+          const defer = el.dataset.defer === "1";
+          /* tenta a próxima fonte do MESMO clipe (local → Pexels) antes de pular */
+          if (srcIdx < clips[clipIdx].srcs.length - 1) { startClip(clipIdx, el, srcIdx + 1, defer); return; }
           if (++fails >= clips.length) { vids.forEach(v => v.remove()); return; } /* imagem permanece */
-          startClip(Number(el.dataset.idx || 0) + 1, el);
+          startClip(clipIdx + 1, el, 0, defer);
         });
       });
 
-      startClip(0, vids[0]);
+      /* Só começa a baixar vídeo depois que a página terminou de carregar,
+         para não competir com imagens e fontes no carregamento inicial */
+      const boot = () => pickCodec().then(() => {
+        clips.forEach((c, i) => { c.srcs[0] = local(i + 1); });
+        startClip(0, vids[0]);
+      });
+      if (document.readyState === "complete") boot();
+      else window.addEventListener("load", boot, { once: true });
     }
 
     const form = document.getElementById("newsletterForm");
@@ -2669,7 +2888,7 @@ const Bindings = {
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) { LionnUI.toast("Informe um email válido."); input.focus(); return; }
       Store.set("lionn_newsletter", { email: true, at: Date.now() });
       input.value = "";
-      LionnUI.toast("Bem-vindo à Lionn Society.");
+      LionnUI.toast("Bem-vindo à Lionn Society. Use LIONN10 para 10% no primeiro pedido.");
     });
   },
 
@@ -2762,6 +2981,9 @@ const Bindings = {
         const vn = document.getElementById("ppVariantName");
         if (lbl) lbl.textContent = c.name;
         if (vn) vn.textContent = c.name;
+        /* a galeria inteira passa para o conjunto da cor escolhida */
+        const gal = document.querySelectorAll(".pp__gallery .img-frame img");
+        galleryFor(p, colorIdx).forEach((src, n) => swapImg(gal[n], src));
       });
     });
 
@@ -2900,10 +3122,23 @@ const Header = {
       LionnUI.openLayer(document.getElementById("cartDrawer"));
     });
     window.addEventListener("scroll", () => this.sync(), { passive: true });
+
+    /* Logo (header, menu e busca): fecha o que estiver aberto e volta ao topo.
+       Já na home, o hash "#/" não muda e o roteador não roda — por isso o scroll
+       suave é feito aqui. Em outra página, a navegação normal para "#/" resolve. */
+    document.querySelectorAll("[data-home-logo]").forEach(el => el.addEventListener("click", e => {
+      const isHome = !location.hash || location.hash === "#/" || location.hash === "#";
+      LionnUI.closeLayers();
+      if (isHome) { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+    }));
   },
   sync() {
     const isHome = !location.hash || location.hash === "#/" || location.hash === "#";
-    document.body.classList.toggle("home-top", isHome && window.scrollY < 60);
+    const y = window.scrollY;
+    document.body.classList.toggle("home-top", isHome && y < 60);
+    /* header sobre o hero → desliga o backdrop-filter (ver CSS body.over-hero) */
+    const hero = isHome ? document.querySelector(".hero") : null;
+    document.body.classList.toggle("over-hero", !!hero && y < hero.offsetHeight);
   },
 };
 
@@ -2919,6 +3154,7 @@ function quickAdd(id) {
     const box = document.getElementById("qaContent");
     let idx = 0;
     box.innerHTML = `
+      <div class="qa__media">${imgHTML(colorImg(p, 0), p.name)}</div>
       <h4>${p.name} — ${Utils.money(p.price)}</h4>
       <span class="variant-lbl">Selecionar cor: <b id="qaColorLbl">${Utils.esc(p.colors[0].name)}</b></span>
       <div class="sw-row">${p.colors.map((c, i) => `<button class="swatch swatch--lg ${i === 0 ? "active" : ""}" style="background:${c.hex}" data-qa-swatch="${i}" aria-label="${Utils.esc(c.name)}"></button>`).join("")}</div>
@@ -2928,6 +3164,7 @@ function quickAdd(id) {
       box.querySelectorAll("[data-qa-swatch]").forEach(s => s.classList.remove("active"));
       sw.classList.add("active");
       document.getElementById("qaColorLbl").textContent = p.colors[idx].name;
+      swapImg(box.querySelector(".qa__media img"), colorImg(p, idx));
     }));
     document.getElementById("qaAdd").addEventListener("click", () => Cart.add(p.id, idx));
     LionnUI.openLayer(document.getElementById("qaSheet"));
@@ -2957,6 +3194,7 @@ function quickView(p) {
     box.querySelectorAll("[data-qv-swatch]").forEach(s => s.classList.remove("active"));
     sw.classList.add("active");
     document.getElementById("qvColorLbl").textContent = p.colors[idx].name;
+    swapImg(box.querySelector(".qv .img-frame img"), colorImg(p, idx));
   }));
   document.getElementById("qvAdd").addEventListener("click", () => Cart.add(p.id, idx));
   LionnUI.openLayer(document.getElementById("qvModal"));
@@ -3005,8 +3243,14 @@ document.addEventListener("click", e => {
     const idx = Number(cardSw.dataset.idx);
     cardSw.parentElement.querySelectorAll(".swatch").forEach(s => s.classList.remove("active"));
     cardSw.classList.add("active");
-    const lbl = cardSw.closest(".pcard").querySelector(`[data-variant-label="${id}"]`);
+    const card = cardSw.closest(".pcard");
+    const lbl = card.querySelector(`[data-variant-label="${id}"]`);
     if (lbl && p) lbl.textContent = p.colors[idx].name;
+    /* foto principal do card acompanha a cor (a de hover continua sendo a armação no rosto) */
+    if (p) {
+      swapImg(card.querySelector(".pcard__media a > .img-frame:not(.img-b) img"), colorImg(p, idx));
+      swapImg(card.querySelector(".pcard__media .img-b img"), galleryFor(p, idx)[4]); /* hover acompanha a cor */
+    }
     return;
   }
 
@@ -3041,9 +3285,11 @@ document.addEventListener("keydown", e => {
 
 /* ---------------- Announcement bar ---------------- */
 function initAnnounce() {
-  const msgs = ["FRETE EXPRESSO PARA TODO O BRASIL", "PROTEÇÃO UV400", "ATÉ 10X SEM JUROS", "30 DIAS PARA TROCAS", "GARANTIA LIONN DE 12 MESES"];
+  const msgs = ["PARCELE EM ATÉ 10X SEM JUROS", "LIONN10 PARA 10% OFF", "FRETE EXPRESSO PARA TODO O BRASIL", "LIONN10 PARA 10% OFF", "30 DIAS PARA TROCAS", "LIONN10 PARA 10% OFF"];
   const half = msgs.map(m => `<span class="announce__item">${m}<i></i></span>`).join("");
   document.getElementById("announceTrack").innerHTML = half + half;
+  const dt = document.getElementById("demoTag");
+  if (dt && DEMO_ENV) dt.textContent = " · Ambiente de teste";
 }
 
 /* ---------------- Cookie bar + popup + search input ---------------- */
@@ -3077,7 +3323,7 @@ function initExtras() {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { LionnUI.toast("Informe um email válido."); return; }
     Store.set("lionn_newsletter", { email: true, at: Date.now() });
     LionnUI.closeLayers();
-    LionnUI.toast("Bem-vindo à Lionn Society.");
+    LionnUI.toast("Bem-vindo à Lionn Society. Use LIONN10 para 10% no primeiro pedido.");
   });
 
   /* busca com debounce */
